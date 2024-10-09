@@ -1,0 +1,107 @@
+
+---
+title: "Assignment 5 EDA"
+author: "Caitlin Wei"
+date: "2024-10-09"
+format:
+  pdf: default
+  html: default
+bibliography: references1.bib
+---
+
+# Load the dataset using your preferred programming language (R or Python). 
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load the dataset
+df = pd.read_csv("wdi.csv")
+```
+
+# Conduct EDA on three indicators
+
+```{python}
+# Descriptive statistics for selected indicators
+gdp_per_capita_stats = df['gdp_per_capita'].describe()
+life_expectancy_stats = df['life_expectancy'].describe()
+inflation_rate_stats = df['inflation_rate'].describe()
+
+gdp_per_capita_stats, life_expectancy_stats, inflation_rate_stats
+
+```
+
+**Summary of Findings**
+
+- **GDP per Capita**: The GDP per capita has a wide range, indicating significant differences between low and high-income countries. Most countries fall below the mean value, with a few high-income countries showing much higher GDP values, creating a skewed distribution.
+- **Life Expectancy**: Life expectancy generally falls between 50 and 85 years for most countries.
+- **Inflation**: These statistics suggest that there is significant disparity in inflation experiences across different countries, with most countries having relatively moderate rates while a few outliers have either very high inflation or negative inflation (deflation). 
+
+# Visualizations
+
+## Bar Chart: GDP per Capita by top 20 Country
+This is Bar chart that shows  GDP per capital by top 20 country.
+```{python}
+#| echo: false
+#| fig-cap: A bar chart of GDP per capita by the top 20 countries
+#| label: fig-bar
+
+# Bar chart of GDP per capita by the top 20 countries
+gdp_per_capita_data = df[['country', 'gdp_per_capita']].dropna()
+gdp_per_capita_data = gdp_per_capita_data.sort_values(by='gdp_per_capita', ascending=False).head(20)
+
+plt.figure(figsize=(6, 4))
+plt.bar(gdp_per_capita_data['country'], gdp_per_capita_data['gdp_per_capita'], color='skyblue')
+plt.title('Top 20 Countries by GDP per Capita (2022)')
+plt.xlabel('Country')
+plt.ylabel('GDP per Capita (USD)')
+plt.xticks(rotation=90)
+plt.tight_layout()
+plt.show()
+```
+
+## Scatter Plot: Life Expectancy vs. GDP per Capita
+This is a scatter plot investigating relationship between life expectancy with GDP per capita
+```{python}
+#| echo: false
+#| fig-cap: A scatter plot of Life Expectancy vs. GDP per Capita
+#| label: fig-scatter
+
+# Scatter plot for Life Expectancy vs GDP per Capita
+plt.figure(figsize=(6,4))
+plt.scatter(df['gdp_per_capita'], df['life_expectancy'], color='green')
+plt.title('Life Expectancy vs GDP Per Capita')
+plt.xlabel('GDP Per Capita (USD)')
+plt.ylabel('Life Expectancy (Years)')
+plt.show()
+
+```
+
+## Summary Table
+Create a summary statistic table
+
+| Statistic   | GDP per Capita (USD) | Life Expectancy (Years) | Inflation Rate (%) |
+|-------------|----------------------|-------------------------|---------------------|
+| Count       | 203                  | 209                     | 169                 |
+| Mean        | 20345.71             | 72.42                   | 12.49               |
+| Std         | 31308.94             | 7.71                    | 19.68               |
+| Min         | 259.03               | 52.99                   | -6.69               |
+| 25%         | 2570.56              | 66.78                   | 5.52                |
+| 50%         | 7587.59              | 73.51                   | 7.97                |
+| 75%         | 25982.63             | 78.48                   | 11.67               |
+| Max         | 240862.18            | 85.38                   | 171.21              |
+
+```{python}
+#| echo: true
+#| tbl-cap: Summary statistics for GDP per capita, life expectancy, and population growth. 
+#| label: tbl-summary
+summary_table = df[['gdp_per_capita', 'life_expectancy', 'inflation_rate']].describe()
+display(summary_table)
+```
+
+As shown in @fig-bar, it shows the top 20 countries with highiest GDP per capita, but there is still some variations. As shown in @fig-scatter, there seems to have a nonlinear relationship between GPD per capital and life expenctency.
+ For @tbl-summary 
+summarizes the key statistics for GDP per capita, life expectancy, and inflation rate. A research justified this finding[@zaman2017association]. Another research compares levels of GDP per capital in developed and developing countries[@maddison1983comparison].
+
+# References
+

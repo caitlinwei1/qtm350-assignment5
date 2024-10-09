@@ -1,0 +1,79 @@
+---
+title: "Assignment5: EDA"
+author: "Caitlin Wei"
+date: "2024-10-09"
+format:
+  revealjs:
+    slide-level: 2
+    theme: moon
+    transition: convex
+    scrollable: true
+    code-line-numbers: true
+    embed-resources: true
+    footer: "Footer text"
+editor:
+  render-on-save: true
+---
+
+
+# Exploratory Data Analysis
+
+
+
+# Overview of GDP Per Capita
+
+- GDP per capita varies across countries.
+- Significant disparities in economic performance.
+
+
+
+# Life Expectancy Insights
+
+- Life expectancy tends to be higher in countries with higher GDP per capita.
+- Countries with lower GDP per capita have a lower life expectancy.
+
+```{python}
+#| echo: false
+#| fig-cap: A bar chart of GDP per capita by the top 20 countries
+#| label: fig-bar
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load the dataset
+df = pd.read_csv("wdi.csv")
+# Bar chart of GDP per capita by the top 20 countries
+gdp_per_capita_data = df[['country', 'gdp_per_capita']].dropna()
+gdp_per_capita_data = gdp_per_capita_data.sort_values(by='gdp_per_capita', ascending=False).head(20)
+
+plt.figure(figsize=(6, 4))
+plt.bar(gdp_per_capita_data['country'], gdp_per_capita_data['gdp_per_capita'], color='skyblue')
+plt.title('Top 20 Countries by GDP per Capita (2022)')
+plt.xlabel('Country')
+plt.ylabel('GDP per Capita (USD)')
+plt.xticks(rotation=90)
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| echo: false
+#| fig-cap: A scatter plot of Life Expectancy vs. GDP per Capita
+#| label: fig-scatter
+
+# Scatter plot for Life Expectancy vs GDP per Capita
+plt.figure(figsize=(6,4))
+plt.scatter(df['gdp_per_capita'], df['life_expectancy'], color='green')
+plt.title('Life Expectancy vs GDP Per Capita')
+plt.xlabel('GDP Per Capita (USD)')
+plt.ylabel('Life Expectancy (Years)')
+plt.show()
+
+```
+
+# Conclusion
+
+- Economic performance and health indicators are closely linked.
+- Further research is needed to understand the full impact of GDP on health metrics.
+
